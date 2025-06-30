@@ -18,15 +18,9 @@ public class SessionEntry {
     private int workDuration;
     private int breakDuration;
     private int breakCounter;
-    @Column(columnDefinition = "TEXT") // Use TEXT for potentially long notes
+    @Column(columnDefinition = "TEXT")
     private String notes;
-
-    // --- Relationships ---
     @ManyToOne
-    @JoinColumn(name = "preset_id") // Creates the 'presetId' foreign key
+    @JoinColumn(name = "preset_id")
     private WorkPreset workPreset;
-
-    @ManyToOne
-    @JoinColumn(name = "activity_id") // Creates the 'activityId' foreign key
-    private BreakActivity breakActivity;
 }

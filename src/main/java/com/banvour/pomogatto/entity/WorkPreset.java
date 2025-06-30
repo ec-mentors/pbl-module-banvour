@@ -20,12 +20,7 @@ public class WorkPreset {
     private int longBreakDuration;
     private String alarmSound;
     private String imageUrl;
-
-    // --- This is the Relationship ---
-    // @ManyToOne: This annotation tells JPA that many "WorkPreset" entries can be related to one "BreakActivity".
-    @ManyToOne
-    // @JoinColumn: This specifies the foreign key column in the database table.
-    // This will create a column named "break_activity_id" in the WorkPreset table,
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "break_activity_id")
     private BreakActivity breakActivity;
 }
