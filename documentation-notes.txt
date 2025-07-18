@@ -1,0 +1,41 @@
+17/7/25
+- problem: field injection
+would work, but not best practise, would cause problems later
+in SessionEntryMapper:
+@Autowired
+private WorkPresetMapper workPresetMapper;
+telling Spring to directly "inject" the WorkPresetMapper into this private field
+but that'll be harder to test, the dependencies are not obvious and can't be declared final
+- solution: @RequiredArgsConstructor annotation (automatically generates a constructor for all final fields in the class)
+
+lets test everything again:
+how? postman
+follow the dependency chain: BreakActivity, WorkPreset, SessionEntry
+post & get are working!
+
+3/7/25
+working on: finishing entities
+a bug appeared! 𓆣
+the problem: 
+No serializer found for class org.hibernate.proxy.pojo.bytebuddy.ByteBuddyInterceptor
+...through reference chain: ...WorkPreset["breakActivity"]->BreakActivity$HibernateProxy["hibernateLazyInitializer"]
+culprit: FetchType.LAZY (jackson cannot serialize hibernates lazy-loading proxy objects)
+solution: DTO's (a pojo that shows data the user)
+stop sending database entities directly to the client, it's for internal use
+process:
+- create dto package & classes
+- service layer: create method to convert database entity into dto
+ -> anotate that with @Transactional(readOnly = true) to ensure lazy-loaded objects can be accessed during conversion
+- adapt controller: call new service method & return list of dto's
+outcome: GET request works again!
+
+FOR LATER
+commit -m:
+feat(presets): Implement versioning for WorkPreset entity
+
+Adds `presetGroupId`, `active`, and `createdAt` fields to the WorkPreset
+entity to support versioning.
+
+This change ensures that SessionEntry records maintain historical
+integrity by linking to an immutable preset version, preventing data
+corruption if a preset is updated in the future.
