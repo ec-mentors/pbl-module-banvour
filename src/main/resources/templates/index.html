@@ -1,42 +1,58 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>index</title>
-  <style>
-    body { font-family: sans-serif; background-color: #f4f4f9; color: #333; margin: 2rem; }
-    h1 { color: #4a4a8a; }
-    .preset-list { list-style: none; padding: 0; }
-    .preset-card { background-color: #fff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 1rem; padding: 1rem 1.5rem; }
-    .preset-card h2 { margin-top: 0; color: #333; }
-    .preset-card p { margin: 0.25rem 0; color: #555; }
-    .preset-card .details { font-size: 0.9em; color: #777; }
-    .no-presets { color: #888; font-style: italic; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pomogatto - Preset Management</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&family=VT323&display=swap" rel="stylesheet">
+    <link rel="icon" th:href="@{/images/tomato.svg}" type="image/x-icon" />
 </head>
 <body>
 
-<h1>My Work Presets</h1>
+<!-- This div simulates the "Manage Presets" window from your mockup -->
+<div class="app-window preset-manager">
 
-<div th:if="${not #lists.isEmpty(preters)}">
-  <ul class="preset-list">
-    <li th:each="preset : ${preters}" class="preset-card">
-      <h2 th:text="${preset.name}">place holder</h2>
-      <p th:text="${preset.description}">place is a holder of the preset.</p>
-      <div class="details">
-        <span>Work: </span><span th:text="${preset.workDuration}">place holder for</span> min |
-        <span>Break: </span><span th:text="${preset.breakDuration}">placeeeeeee hold</span> min
-      </div>
-      <div th:if="${preset.breakActivity != null}" class="details">
-        <span>break activity: </span><span th:text="${preset.breakActivity.name}">place holder Break Activity Name</span>
-      </div>
-    </li>
-  </ul>
-</div>
+    <div class="title-bar">
+        <div class="title-icon">
+            <img th:src="@{/images/tomato.svg}" alt="Pomogatto Logo" width="15" height="15">
+            <span class="title-text">Manage Presets</span>
+        </div>
+        <button class="window-close" aria-label="Close">×</button>
+    </div>
 
-<div th:if="${#lists.isEmpty(preters)}">
-  <p class="no-presets">No work presets have been created yet.</p>
+    <div class="content">
+        <ul class="item-list" th:if="${not #lists.isEmpty(preters)}">
+            <li th:each="preset : ${preters}">
+                <div class="preset-info">
+                    <h3 class="preset-name" th:text="${preset.name}">My First Preset</h3>
+                    <p class="preset-description" th:text="${preset.description}">a simple preset for testing</p>
+                    <div class="preset-durations">
+                        <span>Work: </span><span th:text="${preset.workDuration}">25</span> min |
+                        <span>Break: </span><span th:text="${preset.breakDuration}">5</span> min
+                    </div>
+                    <div class="preset-activity" th:if="${preset.breakActivity != null}">
+                        <span>Break Activity: </span><span th:text="${preset.breakActivity.name}">20 Push-ups</span>
+                    </div>
+                </div>
+                <div class="item-actions">
+                    <a href="#">edit</a>
+                    <span>|</span>
+                    <a href="#">delete</a>
+                </div>
+            </li>
+        </ul>
+
+
+        <div class="empty-state" th:if="${#lists.isEmpty(preters)}">
+            <p class="no-presets">No work presets have been created yet.</p>
+        </div>
+    </div>
+
+    <div class="footer-actions">
+        <!-- This link is styled to look like the "+ New Activity" button -->
+        <a href="#" class="btn-primary">+ New Preset</a>
+    </div>
 </div>
 
 </body>
