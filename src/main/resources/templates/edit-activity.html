@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pomogatto - Edit Activity</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&family=VT323&display=swap" rel="stylesheet">
+    <link rel="icon" th:href="@{/images/tomato.svg}" type="image/x-icon" />
+</head>
+<body>
+
+<div class="app-window create-form">
+    <div class="title-bar">
+        <div class="title-icon">
+            <img th:src="@{/images/tomato.svg}" alt="Pomogatto Logo" width="15" height="15">
+            <span class="title-text">Create New Activity</span>
+        </div>
+        <a th:href="@{/activities}" class="window-close" aria-label="Back">×</a>
+    </div>
+
+    <!-- The Form for a new Activity -->
+    <form class="content" th:action="@{/activities/edit/{id}(id=${activityId})}" th:object="${activity}" method="post">
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" id="name" th:field="*{name}" required>
+        </div>
+        <div class="form-group">
+            <label for="description">Description</label>
+            <input type="text" id="description" th:field="*{description}">
+        </div>
+        <!-- We can add alarmSound, imageUrl, etc. later if needed -->
+
+        <div class="footer-actions form-buttons">
+            <a th:href="@{/activities}" class="btn btn-secondary">Back</a>
+            <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>

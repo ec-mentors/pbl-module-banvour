@@ -24,7 +24,7 @@ public class WorkPresetService {
 
     @Transactional(readOnly = true)
     public List<WorkPresetDto> getAllPresets() {
-        return workPresetRepository.findAll()
+        return workPresetRepository.findAllByOrderByIdAsc()
                 .stream()
                 .map(workPresetMapper::toDto)
                 .collect(Collectors.toList());
@@ -74,5 +74,28 @@ public class WorkPresetService {
         entity.setAlarmSound(dto.getAlarmSound());
         entity.setImageUrl(dto.getImageUrl());
         entity.setBreakActivity(breakActivity);
+    }
+
+    // This new method is specifically for populating our edit form.
+    @Transactional(readOnly = true)
+    public CreateOrUpdateWorkPresetDto getPresetForUpdate(Long id) {
+        WorkPreset workPreset = workPresetRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Preset not found with id: " + id));
+
+        CreateOrUpdateWorkPresetDto dto = new CreateOrUpdateWorkPresetDto();
+        dto.setName(workPreset.getName());
+        dto.setDescription(workPreset.getDescription());
+        dto.setWorkDuration(workPreset.getWorkDuration());
+        dto.setBreakDuration(workPreset.getBreakDuration());
+        dto.setLongBreakDuration(workPreset.getLongBreakDuration());
+        dto.setAlarmSound(workPreset.getAlarmSound());
+        dto.setImageUrl(workPreset.getImageUrl());
+
+        // For the dropdown, we just need the ID of the associated activity
+        if (workPreset.getBreakActivity() != null) {
+            dto.setBreakActivityId(workPreset.getBreakActivity().getId());
+        }
+
+        return dto;
     }
 }

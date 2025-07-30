@@ -21,7 +21,7 @@ public class BreakActivityService {
 
     @Transactional(readOnly = true)
     public List<BreakActivityDto> getAllActivities() {
-        return breakActivityRepository.findAll()
+        return breakActivityRepository.findAllByOrderByIdAsc()
                 .stream()
                 .map(breakActivityMapper::toDto)
                 .collect(Collectors.toList());
@@ -66,5 +66,21 @@ public class BreakActivityService {
             throw new RuntimeException("Activity not found with id: " + id);
         }
         breakActivityRepository.deleteById(id);
+    }
+
+    // This new method is for populating our edit form.
+    @Transactional(readOnly = true)
+    public CreateOrUpdateBreakActivityDto getActivityForUpdate(Long id) {
+        BreakActivity activity = breakActivityRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Activity not found with id: " + id));
+
+        CreateOrUpdateBreakActivityDto dto = new CreateOrUpdateBreakActivityDto();
+        dto.setName(activity.getName());
+        dto.setDescription(activity.getDescription());
+        dto.setAlarmSound(activity.getAlarmSound());
+        dto.setImageUrl(activity.getImageUrl());
+//        dto.setHasCounter(activity.isHasCounter()); // Assuming you add this field to your form later
+
+        return dto;
     }
 }

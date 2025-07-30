@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Changed Title -->
+    <title>Pomogatto - Activity Management</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&family=VT323&display=swap" rel="stylesheet">
+    <link rel="icon" th:href="@{/images/tomato.svg}" type="image/x-icon" />
+</head>
+<body>
+
+<div class="app-window preset-manager">
+    <div class="title-bar">
+        <div class="title-icon">
+            <img th:src="@{/images/tomato.svg}" alt="Pomogatto Logo" width="15" height="15">
+            <!-- Changed Title Text -->
+            <span class="title-text">Manage Activities</span>
+        </div>
+        <button class="window-close" aria-label="Close">×</button>
+    </div>
+
+    <div class="content">
+        <!-- MODIFIED: Loop over the 'activities' list -->
+        <ul class="item-list" th:if="${not #lists.isEmpty(activities)}">
+            <li th:each="activity : ${activities}">
+                <div class="preset-info">
+                    <!-- MODIFIED: Display activity properties -->
+                    <div class="preset-header">
+                        <h3 class="preset-name" th:text="${activity.name}">Activity Name</h3>
+                        <div class="item-actions">
+                            <!-- MODIFIED: Links point to /activities/... -->
+                            <a th:href="@{/activities/edit/{id}(id=${activity.id})}">edit</a>
+                            <span>|</span>
+                            <a class="delete-trigger" th:href="@{/activities/delete/{id}(id=${activity.id})}">delete</a>
+                        </div>
+                    </div>
+                    <p class="preset-description" th:text="${activity.description}">Activity description goes here.</p>
+                </div>
+            </li>
+        </ul>
+
+        <div class="empty-state" th:if="${#lists.isEmpty(activities)}">
+            <p>No break activities have been created yet.</p>
+        </div>
+    </div>
+
+    <div class="footer-actions management-links">
+        <a th:href="@{/}" class="btn btn-secondary">← Back to Home</a>
+        <a th:href="@{/activities/add}" class="btn btn-primary">+ New Activity</a>
+    </div>
+</div>
+
+<!-- Reusing the same delete modal, no changes needed! -->
+<div id="delete-modal-overlay" class="modal-overlay hidden">
+    <div class="app-window modal-window">
+        <div class="modal-body">
+            <p>Do you really want to delete this item?</p>
+            <div class="modal-actions">
+                <button id="cancel-delete-btn" class="btn btn-secondary">No, cancel</button>
+                <form id="confirm-delete-form" method="post">
+                    <button type="submit" class="btn btn-primary">Yes, delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/js/app.js}"></script>
+</body>
+</html>

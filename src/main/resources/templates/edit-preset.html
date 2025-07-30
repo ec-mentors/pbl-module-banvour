@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pomogatto - Edit Preset</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&family=VT323&display=swap" rel="stylesheet">
+    <link rel="icon" th:href="@{/images/tomato.svg}" type="image/x-icon" />
+</head>
+<body>
+
+<div class="app-window create-form"> <!-- Re-using the window style -->
+
+    <div class="title-bar">
+        <div class="title-icon">
+            <img th:src="@{/images/tomato.svg}" alt="Pomogatto Logo" width="15" height="15">
+            <span class="title-text">Edit Preset</span>
+        </div>
+        <!-- This button just goes back, it doesn't close a real window -->
+        <a th:href="@{/}" class="window-close" aria-label="Back">×</a>
+    </div>
+
+    <!-- The Form -->
+    <!-- th:object binds the form to the "preset" object from our controller -->
+    <form class="content" th:action="@{/presets/edit/{id}(id=${presetId})}" th:object="${preset}" method="post">
+
+        <div class="form-group">
+            <label for="name">Name</label>
+            <!-- th:field connects this input to the 'name' property of the preset object -->
+            <input type="text" id="name" th:field="*{name}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description</label>
+            <input type="text" id="description" th:field="*{description}">
+        </div>
+
+        <div class="form-group">
+            <label for="workDuration">Work Duration (min)</label>
+            <input type="number" id="workDuration" th:field="*{workDuration}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="breakDuration">Break Duration (min)</label>
+            <input type="number" id="breakDuration" th:field="*{breakDuration}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="longBreakDuration">Long Break (min)</label>
+            <input type="number" id="longBreakDuration" th:field="*{longBreakDuration}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="breakActivityId">Break Activity</label>
+            <!-- This select is for the many-to-one relationship -->
+            <select id="breakActivityId" th:field="*{breakActivityId}" required>
+                <option value="">-- Choose an activity --</option>
+                <option th:each="activity : ${allActivities}"
+                        th:value="${activity.id}"
+                        th:text="${activity.name}">
+                    Activity Name
+                </option>
+            </select>
+        </div>
+
+        <!-- We'll skip alarmSound and imageUrl for simplicity for now -->
+
+        <div class="footer-actions form-buttons">
+            <a th:href="@{/}" class="btn-secondary">Back</a>
+            <button type="submit" class="btn-primary">Save</button>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>
