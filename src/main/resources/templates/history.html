@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pomogatto - Session History</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&family=VT323&display=swap" rel="stylesheet">
+    <link rel="icon" th:href="@{/images/tomato.svg}" type="image/x-icon" />
+</head>
+<body>
+
+<div class="app-window preset-manager">
+    <div class="title-bar">
+        <div class="title-icon">
+            <img th:src="@{/images/tomato.svg}" alt="Pomogatto Logo" width="15" height="15">
+            <span class="title-text">Session History</span>
+        </div>
+        <a th:href="@{/}" class="window-close" aria-label="Back">×</a>
+    </div>
+
+    <div class="content">
+        <!-- Loop over the 'sessions' list from the controller -->
+        <ul class="item-list" th:if="${not #lists.isEmpty(sessions)}">
+            <!-- 1. Changed the loop variable name here -->
+            <li th:each="sessionEntry : ${sessions}">
+                <div class="preset-info">
+                    <div class="preset-header">
+                        <!-- 2. And updated its usage everywhere inside the loop -->
+                        <h3 class="preset-name" th:text="${#temporals.format(sessionEntry.startTime, 'yyyy-MM-dd HH:mm')}"></h3>
+                    </div>
+                    <p class="preset-description" th:if="${sessionEntry.workPreset != null}" th:text="${'Preset: ' + sessionEntry.workPreset.name}"></p>
+                    <div class="preset-detail">
+                        <span>Work: </span><span th:text="${sessionEntry.workDuration}"></span> min |
+                        <span>Breaks: </span><span th:text="${sessionEntry.breakCounter}"></span>
+                    </div>
+                    <div class="preset-detail" th:if="${sessionEntry.notes != null and !sessionEntry.notes.isEmpty()}">
+                        <span>Notes: </span><span th:text="${sessionEntry.notes}"></span>
+                    </div>
+                </div>
+            </li>
+        </ul>
+
+        <div class="empty-state" th:if="${#lists.isEmpty(sessions)}">
+            <p>No session history recorded yet.</p>
+        </div>
+    </div>
+
+    <div class="footer-actions">
+        <a th:href="@{/}" class="btn btn-secondary">← Back to Home</a>
+    </div>
+</div>
+
+<!-- We don't need the delete modal or any complex JS on this page -->
+</body>
+</html>

@@ -1,33 +1,33 @@
-/* Basic setup to make the browser look like a desktop */
 body {
     font-family: 'IBM Plex Mono', monospace;
     background-color: #e9e9e9;
     background-image: url('/images/wallpaper.jpg');
-    background-size: auto;
-    background-repeat: no-repeat;
+    background-size: cover; /* Use cover to fill the space */
     color: #6b655f;
     font-size: 8px;
     margin: 0;
-    padding: 2rem; /* Add some space around the window */
-    display: flex; /* Helps in aligning multiple windows later */
+    padding: 2rem;
+    display: flex;
     justify-content: center;
 }
 
-.retro {
-    font-family: 'VT323', monospace;
-}
-
-/* The main container styled to look like a window */
+/* ==========================================================================
+   Component: App Window
+   ========================================================================== */
 .app-window {
-    width: 270px;
-    height: 400px;
-    /*background-image: url('/images/paper.webp');*/
+    width: 250px;
     background-color: #faf9f3;
     border: 1.5px solid #e0daca;
     border-radius: 15px;
     display: flex;
     flex-direction: column;
-    overflow: hidden; /* Ensures content respects the border-radius */
+    overflow: hidden;
+    height: 400px;
+}
+
+.create-form {
+    height: auto;
+    max-height: 90vh;
 }
 
 /* --- Title Bar --- */
@@ -38,14 +38,13 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 8px 12px;
-    border-bottom: 2px solid #e0daca;
     font-weight: 600;
 }
 
 .title-icon {
     display: flex;
     align-items: center;
-    gap: 8px; /* Space between icon and text */
+    gap: 8px;
 }
 
 .window-close {
@@ -63,28 +62,24 @@ body {
     justify-content: center;
 }
 
-/* --- Main Content Area --- */
+/* ==========================================================================
+   Component: Preset List Item
+   ========================================================================== */
 .content {
     padding: 8px 16px;
-    flex-grow: 1; /* Allows this area to fill available space */
-    min-height: 200px;
+    flex-grow: 1;
+    min-height: 100px;
     overflow-y: auto;
 }
 
 .item-list {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: stretch;
+    list-style: none;
     padding: 0;
     margin: 0;
 }
 
 .item-list li {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    padding: 6px 0 16px;
+    padding: 8px 0 12px 0;
     border-bottom: 1px solid #e0daca;
 }
 
@@ -92,11 +87,18 @@ body {
     border-bottom: none;
 }
 
-
 .preset-info {
     display: flex;
     flex-direction: column;
     gap: 4px;
+    min-width: 0;
+}
+
+/*containing name & actions*/
+.preset-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline; /* Aligns text nicely */
 }
 
 .preset-name {
@@ -105,49 +107,68 @@ body {
     font-weight: 600;
 }
 
-.preset-description {
-    margin: 0;
-    font-size: 0.9em;
-    color: #a29990;
-}
-
-.preset-durations, .preset-activity {
-    margin: 0;
-    font-size: 1em;
-}
-
 .item-actions {
-    display: flex;
-    align-content: center;
-    gap: 8px;
-    padding: 0 0 0 12px;
-    font-size: 1em;
+    font-size: 1.2em;
+    font-weight: 600;
+    flex-shrink: 0;
+    padding-left: 12px;
 }
 
 .item-actions a {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font-family: inherit;
+    font-size: inherit;
     color: #8c847c;
     text-decoration: none;
+    cursor: pointer;
 }
 
 .item-actions a:hover {
     text-decoration: underline;
 }
 
-/* --- Footer Area --- */
+.preset-description {
+    margin: 0;
+    font-size: 0.9em;
+    color: #a29990;
+    overflow-wrap: break-word;
+}
+
+.preset-detail {
+    margin: 0;
+    font-size: 1em;
+}
+
+/* ==========================================================================
+   Component: Buttons & Forms
+   ========================================================================== */
 .footer-actions {
     padding: 16px;
     text-align: center;
 }
 
-.btn-primary {
+.management-links {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.btn {
     display: inline-block;
-    color: #6b655f;
     text-decoration: none;
+    font-weight: 600;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+.btn-primary {
+    color: #6b655f;
     padding: 10px 20px;
     border: 2px solid #6b655f;
     border-radius: 25px;
-    font-weight: 600;
-    transition: all 0.2s ease-in-out;
 }
 
 .btn-primary:hover {
@@ -155,8 +176,148 @@ body {
     color: #fff;
 }
 
-.empty-state {
+.btn-secondary {
+    color: #8c847c;
+}
+
+.empty-state, .form-group {
+    margin-bottom: 12px;
+}
+
+.form-group label {
+    font-weight: 600;
+    margin-bottom: 4px;
+    font-size: 1.1em;
+}
+
+.form-group input, .form-group select {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 1.1em;
+    padding: 8px;
+    border: 1.5px solid #e0daca;
+    border-radius: 5px;
+    background-color: #fff;
+}
+
+.form-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.delete-form {
+    display: inline;
+}
+
+/* ==========================================================================
+   Component: Modal (Pop-up Window)
+   ========================================================================== */
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(40, 40, 40, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-overlay.hidden {
+    display: none;
+}
+
+/* Use a modifier to override the fixed height from .app-window */
+.modal-window {
+    height: auto;
     text-align: center;
-    padding-top: 40px;
-    color: #6b655f;
+}
+
+.modal-body {
+    padding: 24px;
+}
+
+.modal-body p {
+    font-size: 1.3em;
+    font-weight: 600;
+    margin: 0 0 24px 0; /* No top margin */
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+}
+
+/* ==========================================================================
+   Home Screen
+   ========================================================================== */
+.home-view {
+    text-align: center;
+}
+.home-preset-name {
+    font-size: 1.8em;
+    margin: 20px 0 10px 0;
+}
+.home-preset-details {
+    font-size: 1.2em;
+    margin: 4px 0;
+    color: #a29990;
+}
+.home-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding-bottom: 20px;
+}
+.home-actions .management-links {
+    justify-content: space-around;
+}
+
+/* --- Timer View Specific Styles --- */
+.timer-view {
+    position: fixed; /* Takes it out of the normal flow */
+    bottom: 20px;
+    right: 20px;
+    width: 240px; /* A bit smaller */
+    height: auto;
+    z-index: 50;
+    text-align: center;
+}
+.hidden {
+    display: none !important; /* Utility class to hide elements */
+}
+#time-display {
+    font-size: 4em;
+    font-weight: 600;
+    margin: 10px 0;
+}
+.progress-bar {
+    width: 80%;
+    margin: 0 auto 15px auto;
+    height: 5px;
+    background-color: #e0daca;
+    border-radius: 5px;
+    overflow: hidden;
+}
+#progress-indicator {
+    width: 100%; /* Starts full */
+    height: 100%;
+    background-color: #6b655f;
+    transition: width 0.5s ease;
+}
+.timer-animation-placeholder {
+    height: 80px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.timer-controls {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
 }

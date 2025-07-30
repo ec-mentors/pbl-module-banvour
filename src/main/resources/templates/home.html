@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Pomogatto - Home</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="icon" th:href="@{/images/tomato.svg}" type="image/x-icon"/>
+</head>
+<body>
+
+<!-- === HOME SCREEN VIEW (Visible by default) === -->
+<div id="home-screen" class="app-window home-view">
+    <div class="title-bar">
+        <div class="title-icon">
+            <img th:src="@{/images/tomato.svg}" alt="Pomogatto Logo" width="15" height="15">
+            <span class="title-text">Pomogatto</span>
+        </div>
+    </div>
+    <div class="content">
+        <div th:if="${defaultPreset != null}">
+            <h2 class="home-preset-name" th:text="${defaultPreset.name}">Standard Focus</h2>
+            <p class="home-preset-details">
+                Work: <span th:text="${defaultPreset.workDuration}">25</span> min,
+                Break: <span th:text="${defaultPreset.breakDuration}">5</span> min
+            </p>
+            <p class="home-preset-details" th:if="${defaultPreset.breakActivity != null}"
+               th:text="${defaultPreset.breakActivity.name}">
+                Stretch
+            </p>
+        </div>
+        <div th:if="${defaultPreset == null}" class="empty-state">
+            <p>No presets found. Please create one first!</p>
+        </div>
+    </div>
+    <div class="footer-actions home-actions">
+        <!-- The main start button -->
+        <button id="start-session-btn" class="btn btn-primary" th:if="${defaultPreset != null}"
+                th:data-work-duration="${defaultPreset.workDuration}"
+                th:data-break-duration="${defaultPreset.breakDuration}"
+                th:data-preset-id="${defaultPreset.id}">
+            ▶ Start Session
+        </button>
+        <!-- Navigation to management pages -->
+        <div class="management-links">
+            <a th:href="@{/presets}" class="btn btn-secondary">Presets</a>
+            <a th:href="@{/activities}" class="btn btn-secondary">Activities</a>
+            <a th:href="@{/history}" class="btn btn-secondary">History</a>
+        </div>
+    </div>
+</div>
+
+<!-- === WORK TIMER VIEW (Hidden by default) === -->
+<div id="timer-window" class="app-window timer-view hidden">
+    <div class="content">
+        <div id="session-type-display" class="session-type">Work</div>
+        <div id="time-display">25:00</div>
+        <div class="progress-bar">
+            <div id="progress-indicator"></div>
+        </div>
+        <div class="timer-animation-placeholder">
+            <!-- Animation goes here later -->
+            <img th:src="@{/images/tomato.svg}" alt="Animation" width="60" height="60">
+        </div>
+    </div>
+    <div class="footer-actions timer-controls">
+        <button id="stop-timer-btn" class="btn btn-secondary">← Stop</button>
+        <button id="play-pause-btn" class="btn btn-primary">❚❚</button>
+    </div>
+</div>
+
+<!-- Reusing the delete modal structure for our NEW "stop" confirmation -->
+<div id="stop-modal-overlay" class="modal-overlay hidden">
+    <div class="app-window modal-window">
+        <div class="modal-body">
+            <p>Do you want to end this session?</p>
+            <div class="modal-actions">
+                <button id="cancel-stop-btn" class="btn btn-secondary">No, continue</button>
+                <button id="confirm-stop-btn" class="btn btn-primary">Yes, end session</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/js/app.js}"></script>
+</body>
