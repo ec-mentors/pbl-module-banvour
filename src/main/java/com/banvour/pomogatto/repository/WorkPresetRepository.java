@@ -11,5 +11,5 @@ import java.util.List;
  */
 @Repository
 public interface WorkPresetRepository extends JpaRepository<WorkPreset, Long> {
-    List<WorkPreset> findAllByOrderByIdAsc();
+    List<WorkPreset> findByActiveOrderByPresetGroupIdAscIdAsc(boolean active);
 }
