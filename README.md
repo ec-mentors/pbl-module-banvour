@@ -8,7 +8,8 @@ This project serves as a comprehensive full-stack application, featuring a robus
 <p align="center">
 <img width="1915" height="766" alt="pomogatto_screenshots" src="https://github.com/user-attachments/assets/6bbbbde8-cd90-4025-91df-5763923f1604" /></p>
 
-I aimed for a design that is minimal, yet soft and comforting. As you can see, the color beige does that for me, i think my brain associates it with a cozy feeling because it reminds me of my daily coffee. (I plan to make the color palette customizable in the future)
+I aimed for a design that is minimal, yet soft and comforting. As you can see, the color beige does that for me, i think my brain associates it with a cozy feeling because it reminds me of my daily coffee.
+In the future i plan to make the color palette customizable and implement my own artwork to visualize the activities and add extra motivation.
 
 You can also take a look at my <a href="https://www.figma.com/design/S5SNLSv1zWtwsKyKI5OW3x/pomogatto?node-id=0-1&t=Y0CNrIhc7I3zvwQ8-1">Wireframes</a> on Figma.
 
