@@ -1,6 +1,6 @@
 # <img src="src/main/resources/static/images/tomato.svg" alt="Logo" width="30px"> Pomogatto
 
-This is my first ever backend coding project, a Pomodoro timer application using the well known <a href="https://en.wikipedia.org/wiki/Pomodoro_Technique">time management method</a> developed by Francesco Cirillo. It allows users to create and manage personalized work/break presets, track their sessions, and associate break periods with specific, repeatable activities.
+For the purpose of learning, I wrote my first ever backend coding project, a Pomodoro timer application using the well known <a href="https://en.wikipedia.org/wiki/Pomodoro_Technique">time management method</a> developed by Francesco Cirillo. It allows users to create and manage personalized work/break presets, track their sessions, and associate break periods with specific, repeatable activities.
 
 This project serves as a comprehensive full-stack application, featuring a robust backend built with Java and Spring Boot, and a dynamic frontend for user interaction.
 
@@ -53,3 +53,8 @@ The frontend is a static application served by Spring Boot. It operates as a sin
 *   [ ] Build the frontend mechanism to **automatically log completed sessions** by calling the `POST /api/sessions` endpoint.
 *   [ ] Migrate the frontend from vanilla JavaScript to a modern framework like React for more complex state management.
 *   [ ] Package the final application as a cross-platform desktop app using Tauri.
+
+<br>
+<br>
+<p align="center">
+All rights reserved © 2025 banvour</p>
